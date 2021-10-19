@@ -29,10 +29,10 @@ var currentTime = setTimeout(updateTime, 500);
 //get date div
 var myClock = document.getElementById('dateDisplay');
 //day of today
-var today=document.getElementById('dayDisplay').innerHTML=dayarray[day];
+// var today=document.getElementById('dayDisplay').innerHTML=dayarray[day];
 
 //get time div
-var myWatch = document.getElementById('timeDisplay').innerHTML = '' + dayarray[day] + ' ' +hour + ':' + minute;
+var myWatch = document.getElementById('timeDisplay').innerHTML =dayarray[day] + ' ' +hour + ':' + minute;
 
 //current date as string to div
 myClock.innerHTML = currentDate;
