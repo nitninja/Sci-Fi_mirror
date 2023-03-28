@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+    .noti2 {
+    float: right;
+    width: 300px;
+    margin-top: 5%;
+    margin-left: 32%;
+    padding-top: 3%;
+    padding-bottom: 1.4%;
+    padding-right: 2%;
+    padding-left: 2%;
+    background:black;
+    border-radius: 5%;
+    
+    }
+    #noti3 {
+    margin: 10;
+    padding: 70;
+    list-style: none;
+    color: white;
+    font-weight: bold;
+    font-size: large;
+    }
+   
+   
+    
+    
+    #noti4{
+    margin: 10;
+    margin-bottom: 60px;
+    padding: 70;
+    list-style: none;
+    color: white;
+    }
+    
+    
+
+   
+
+    
+    </style>
+    <script>
+        function snapshotToArraya(snapshot) {
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+
+        returnArr.push(childSnapshot.key+": "+item);
+    });
+
+    return returnArr;
+};
+    </script>
+        
+    <script type="module"> 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-analytics.js";
+        //import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    const firebaseConfigA = {
+      apiKey: "AIzaSyB4cThz06dLfEXtPbUdZzuwsI9L9fWP0hw",
+      authDomain: "notificationlistener-18aed.firebaseapp.com",
+      databaseURL: "https://notificationlistener-18aed-default-rtdb.firebaseio.com",
+      projectId: "notificationlistener-18aed",
+      storageBucket: "notificationlistener-18aed.appspot.com",
+      messagingSenderId: "24332063696",
+      appId: "1:24332063696:web:ecc03e71ea450da1c55fd5",
+      measurementId: "G-1VNKE1QL65"
+    };
+      
+              // Initialize Firebase
+              const appA = initializeApp(firebaseConfigA);
+              import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+              setInterval(function(){  
+
+              const dbRef = ref(getDatabase());
+              get(child(dbRef, "msg/")).then((snapshot) => {
+              if (snapshot.exists()) {
+                var A=snapshotToArraya(snapshot);
+              console.log(A);
+              clearcontenta()
+              pria(A);
+              } else {
+              console.log("No data available");
+                  }
+              }).catch((error) => {
+              console.error(error);
+                  });
+                }, 1000);
+            
+            </script>
+            
+    <body  >
+    
+</head>
+<body>
+    
+<div id="noti">
+<div class="noti2">
+<ul id="noti3"><li>Recent Notification</li></ul>
+<ul id="noti4"></ul>
+<script>
+    
+    function pria(data) {
+        let list = document.getElementById("noti4");
+        data.forEach((item) => {
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        });
+    }
+    function clearcontenta() {
+            document.getElementById("noti4").innerHTML = "";
+        }
+
+   
+  </script>
+
+
+
+</div>
+</div>
+</body>
+</html>

@@ -7,10 +7,123 @@
   <link rel="stylesheet" href="font/Rimouski.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="smart-home.png">
+   <!-- Todo -->
+   <script>
+    function snapshotToArray(snapshot) {
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+    var item = childSnapshot.val();
+    item.key = childSnapshot.key;
+
+    returnArr.push(item);
+});
+
+return returnArr;
+};
+function snapshotToArraya(snapshot) {
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+
+        returnArr.push(childSnapshot.key+": "+item);
+    });
+
+    return returnArr;
+};
+</script>
+<script type="module"> 
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-analytics.js";
+    //import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDeNL5rjE5HzfMG05Gy3fywe-9gsF1Xj8Q",
+      authDomain: "unified-app-153b4.firebaseapp.com",
+      databaseURL: "https://unified-app-153b4-default-rtdb.firebaseio.com",
+      projectId: "unified-app-153b4",
+      storageBucket: "unified-app-153b4.appspot.com",
+      messagingSenderId: "791568818748",
+      appId: "1:791568818748:web:dd8ea892172c20bfd89939",
+      measurementId: "G-TY1SVHLC3H"
+    };
+  
+          // Initialize Firebase
+          const app = initializeApp(firebaseConfig);
+          import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+          setInterval(function(){  
+
+          const dbRef = ref(getDatabase());
+          get(child(dbRef, "Tasks/")).then((snapshot) => {
+          if (snapshot.exists()) {
+            var A=snapshotToArray(snapshot);
+          console.log(A);
+          clearcontent()
+          pri(A);
+          } else {
+          console.log("No data available");
+              }
+          }).catch((error) => {
+          console.error(error);
+              });
+            }, 1000);
+
+        setInterval(function(){  
+
+const dbRef = ref(getDatabase());
+get(child(dbRef, "msg/")).then((snapshot) => {
+if (snapshot.exists()) {
+  var A=snapshotToArraya(snapshot);
+console.log(A);
+clearcontenta()
+pria(A);
+} else {
+console.log("No data available");
+    }
+}).catch((error) => {
+console.error(error);
+    });
+  }, 1000);
+
+  setInterval(function(){  
+
+const dbRef = ref(getDatabase());
+get(child(dbRef, "location/")).then((snapshot) => {
+if (snapshot.exists()) {
+var A=JSON.parse(JSON.stringify(snapshot.val()));
+var lon = A.longitude;
+var lat = A.latitude;
+//lonsen();
+//latsen();
+getWeather(lat, lon);
+console.log("lat "+lat+" lon "+ lon);
+} else {
+console.log("No data available");
+    }
+}).catch((error) => {
+console.error(error);
+    });
+  }, 5000);
+        </script>
+        
+<body  >
+<script>
+    function unhidetodolist(){
+    document.getElementById("id2").style.display = "block";
+    
+}
+function hidetodolist(){
+    document.getElementById("id2").style.display = "none";
+}
+</script>
+
 </head>
+
+
 <body onLoad="updateTime();">
   <div class="app-title">
-    <p>SciFi Mirror</p>
+    <p>Sci-Fi Mirror</p>
   </div>
   <div class="container">
     <div class="weather-container">
@@ -28,14 +141,7 @@
       </div>
     </div>
   </div>
-  <div class="date">
-          <h3 id="dateDisplay"></h3>
-          <!-- <h3 id="dayDisplay"></h3> -->
-      </div>
-      <div class="time">
-              <h3 id="timeDisplay"></h3>
-          </div>
-<script src="date.js"></script>
+  
 
 
 
@@ -45,18 +151,143 @@
     <hr>
     <div class="accordion" id="newsAccordion"></div>
   </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+
+  <!--notification-->
+  <div id="noti">
+    <div class="noti2">
+    <ul id="noti3"><li>WhatsApp Notification</li></ul>
+    <ul id="noti4"></ul>
+    <script>
+        
+        function pria(data) {
+            let list = document.getElementById("noti4");
+            data.forEach((item) => {
+                let li = document.createElement("li");
+                li.innerText = item;
+                list.appendChild(li);
+            });
+        }
+        function clearcontenta() {
+                document.getElementById("noti4").innerHTML = "";
+            }
+    
+       
+      </script>
+    
+    
+    
+    </div>
+    </div>
+
+
+  <!-- bmi block -->
+  <div>
+    <input type="button" name="BMI"  onclick="unhide();" id="id1" style="position: fixed; bottom: 30px;right: 30px;"  value="BMI">
+</div>
+
+<div class="container1" id="BMI" style="position: fixed;">
+  <h1 class="head">BMI Calculator</h1>
+  <div class="display">
+            <p id="result">20.0</p>
+            <p id="category">Normal weight</p>
+  </div>
+    <div class="row">
+        <input type="range" min="20" max="200" value="20" id="weight" oninput="calculate()">
+        <span id="weight-val">20 kg</span>
+    </div>
+    <div class="row">
+        <input type="range" min="100" max="250" value="100" id="height" oninput="calculate()">
+        <span id="height-val">100 cm</span>
+    </div>
+    <input type="button" name="Ok" onclick="hide();" id="id1" value="Ok">
+</div>
+
+
+<!-- to-do list block   -->
+<input type="button" value="To-do List" id="todobtn" style="position: fixed; bottom: 30px;right: 80px;"  onclick="unhidetodolist();">
+<div id="id2">
+<div class="to-do">
+
+
+
+
+<div class="todocontainer">
+<h3 class="to-do-title">Tasks</h3>
+</div>
+<ul id="uncompleted-tasks"></ul>
+<script>
+    
+    function pri(data) {
+        let list = document.getElementById("uncompleted-tasks");
+        data.forEach((item) => {
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        });
+    }
+    function clearcontent() {
+            document.getElementById("uncompleted-tasks").innerHTML = "";
+        }
+
+   
+  </script>
+
+
+<p align="center">
+<input type="button" value="ok" id="todobtn" onclick="hidetodolist();">
+</p>
+</div>
+</div>
+
+<input type="button" value="Cricket Match" style="position: fixed; bottom: 30px;right: 180px;height:8%;width:160px;text-align: center;padding: .5%;background-color: #E45826;
+color: white;
+border-color: rgb(1, 38, 106);
+border-radius: 10%;
+font-size:larger;" onclick="unhidescore();">
+<div id="id4" style="position: fixed; margin-top: 10%; margin-left: 10%;width:80%;min-height: 450px; background-color: black;">
+    <center><iframe  src="https://widget.crictimes.org/" style="width:80%;min-height: 450px;" frameborder="0" scrolling="yes"></iframe></center><br>
+    <center><input type="button" value="ok" onclick="hidescore();" style="width: 100px; height: 50px; font-size: large;"></center>
+</div>
+<script type="text/javascript">;
+function updateClock() {
+//© OBH 2022 - www.oliverboorman.biz 
+
+var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+var now = new Date();
+var day = now.getDay();
+var date = now.getDate();
+var month = now.getMonth();
+var year = now.getFullYear();
+var hour = now.getHours();
+var minute = now.getMinutes();
+var second = now.getSeconds();
+
+if(date<10) date = "0" + date;
+if(hour<10) hour = "0" + hour;
+if(minute<10) minute = "0" + minute;
+if(second<10) second = "0" + second;
+
+var firstRow = hour + ":" + minute + ":" + second + '';
+document.getElementById("row1").innerHTML = firstRow;
+var secondRow = days[day] + "&nbsp;" + date + "/" + months[month] + "/" + year + '';
+document.getElementById("row2").innerHTML = secondRow;
+
+setTimeout("updateClock()",1000);
+} 
+</script>
+
+<time id="row1" class="time" ></time><br><br><br>
+<time id="row2" class="date" ></time>
+<form method="GET" action="https://www.google.com/search" style="position: fixed;bottom: 1px;right: 1px;">
+<input type="text" name="q" placeholder="Search">
+<input type="submit" value="Search">  
+</form>
+<script type="text/javascript">updateClock();</script>
     <script src="app.js"></script>
+    
+   
 
 </body>
 

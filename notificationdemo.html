@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Task -->
+    <script>
+        function snapshotToArray(snapshot) {
+    var returnArr = [];
+
+    snapshot.forEach(function(childSnapshot) {
+        var item = childSnapshot.val();
+        item.key = childSnapshot.key;
+
+        returnArr.push(item);
+    });
+
+    return returnArr;
+};
+    </script>
+        
+    <script type="module"> 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-analytics.js";
+        //import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4cThz06dLfEXtPbUdZzuwsI9L9fWP0hw",
+      authDomain: "notificationlistener-18aed.firebaseapp.com",
+      databaseURL: "https://notificationlistener-18aed-default-rtdb.firebaseio.com",
+      projectId: "notificationlistener-18aed",
+      storageBucket: "notificationlistener-18aed.appspot.com",
+      messagingSenderId: "24332063696",
+      appId: "1:24332063696:web:ecc03e71ea450da1c55fd5",
+      measurementId: "G-1VNKE1QL65"
+    };
+      
+              // Initialize Firebase
+              const app = initializeApp(firebaseConfig);
+              import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-database.js";
+              setInterval(function(){  
+
+              const dbRef = ref(getDatabase());
+              get(child(dbRef, "msg/")).then((snapshot) => {
+              if (snapshot.exists()) {
+              console.log(snapshot.val());
+              
+              } else {
+              console.log("No data available");
+                  }
+              }).catch((error) => {
+              console.error(error);
+                  });
+                }, 1000);
+            
+            </script>
+            
+    <body  >
+   
+</head>
+<body>
+   
+</body>
+</html>
